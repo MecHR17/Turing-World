@@ -600,7 +600,7 @@ function openManual(id) {
   const el = $('#manual');
   const groups = [...new Set(MANUAL.map(s => s.group))];
   el.innerHTML = `<div class="mpanel" role="dialog" aria-modal="true" aria-label="Turing World manual">
-    <div class="mhead"><b>Manual</b><button class="ib" data-man-close aria-label="Close manual">×</button></div>
+    <div class="mhead"><b>Manual</b><span class="mjump"><button class="btn small" data-man="start">Reference</button><button class="btn small" data-man="th-intro">Theory course</button></span><button class="ib" data-man-close aria-label="Close manual">×</button></div>
     <nav class="mtabs" role="tablist" aria-label="Manual sections">${groups.map(g => `<div class="mgroup"><span class="mgh">${g}</span>${MANUAL.filter(s => s.group === g).map(s => `<button role="tab" data-man="${s.id}" aria-selected="${s.id === manTab}" class="${s.id === manTab ? 'on' : ''}">${s.title}</button>`).join('')}</div>`).join('')}</nav>
     <article class="mbody" role="tabpanel" tabindex="0"></article></div>`;
   showManualTab(manTab); el.hidden = false; $('#bManual').classList.add('on');
