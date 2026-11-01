@@ -1,5 +1,5 @@
 <title>Turing World</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet"
   href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
@@ -11406,8 +11406,8 @@ self.onmessage = e => {
   function sub(n) { return String(n).split('').map(d => '₀₁₂₃₄₅₆₇₈₉'[+d]).join(''); }
 
   // ---------- export / import ----------
-  // Use the browser's native download API; no platform-specific capability is needed.
-  const downloadsCap = true;
+  let downloadsCap = null;
+  (async () => { try { if (window.claude && window.claude.use) downloadsCap = await window.claude.use('downloads'); } catch (e) { downloadsCap = null; } for (const w of wins.values()) if (w.type === 'io') renderWin(w); })();
   function exportName() { const ex = EXAMPLES.find(e => e.key === world.key); return (ex ? ex.title : 'my turing world').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'turing-world'; }
   function exportText(name) { return JSON.stringify({ format: 'turing-world', version: 1, name, exportedAt: new Date().toISOString(), world: worldData() }, null, 2); }
   function ioHTML() {
@@ -11429,23 +11429,10 @@ self.onmessage = e => {
   </div>`;
   }
   function ioMsg(w, sel, text, bad) { const el = w.el.querySelector(sel); if (el) { el.textContent = text; el.style.color = bad ? 'var(--bad)' : ''; } }
-  function exportSave(w) {
+  async function exportSave(w) {
     const name = (w.el.querySelector('[data-io=name]').value.trim() || 'turing-world').replace(/\.json$/i, '');
-    try {
-      const blob = new Blob([exportText(name)], { type: 'application/json;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = name + '.json';
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-      ioMsg(w, '[data-r=iomsg]', 'Download started.');
-    } catch (e) {
-      ioMsg(w, '[data-r=iomsg]', 'Could not start the download. Use Copy as text instead.', true);
-    }
+    try { await downloadsCap.save({ filename: name + '.json', data: exportText(name) }); ioMsg(w, '[data-r=iomsg]', 'Saved.'); }
+    catch (e) { const c = e && e.code; ioMsg(w, '[data-r=iomsg]', c === 'declined' ? 'Not saved.' : c === 'rate_limited' ? 'A save prompt is already open.' : 'Saving is not available here: use Copy as text instead.', c !== 'declined'); }
   }
   function exportCopy(w) {
     const name = (w.el.querySelector('[data-io=name]').value.trim() || 'turing-world'); const text = exportText(name);
