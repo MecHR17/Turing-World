@@ -1,0 +1,3 @@
+# build outputs that are not part of the site (the site is index.html)
+dist/
+turing-world.html
