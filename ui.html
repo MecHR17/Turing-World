@@ -436,6 +436,8 @@ textarea.gen { min-height: 190px; font-size: 12px; }
 
 @media (max-width: 760px) {
   .grp.sep { padding-left: 0; border-left: 0; }
+  .bar > .grp { flex-shrink: 1; min-width: 0; max-width: 100%; }   /* groups wrap inside the screen instead of widening the page */
+  .counter { min-width: 0; overflow-wrap: anywhere; }
   .grow { display: none; }
   .brand { font-size: 17px; }
   .win { left: 0 !important; right: 0; top: auto !important; bottom: 0; width: auto; max-width: none; max-height: 74%; border-radius: 14px 14px 0 0; }
