@@ -1,5 +1,5 @@
 # Builds the page from its sources.
-#   dist/turing-world.html           a complete web page for hosting anywhere (uses host-web.js)
+#   dist/turing-world.html, index.html   a complete web page for hosting anywhere (uses host-web.js)
 #   turing-world.html                the claude.ai artifact version (uses host-artifact.js)
 import json, os
 rd = lambda f: open(f, encoding='utf-8').read()
@@ -22,7 +22,9 @@ def page(host):
     return ui.replace('/*CORE*/', core).replace('/*APP*/', core_src + world_files + app)
 HEAD = '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n</head>\n<body>\n'
 os.makedirs('dist', exist_ok=True)
-open('dist/turing-world.html', 'w', encoding='utf-8').write(HEAD + page('host-web.js') + '\n</body>\n</html>\n')
+web = HEAD + page('host-web.js') + '\n</body>\n</html>\n'
+open('dist/turing-world.html', 'w', encoding='utf-8').write(web)
+open('index.html', 'w', encoding='utf-8').write(web)   # the front page for GitHub Pages and other static hosts
 open('turing-world.html', 'w', encoding='utf-8').write('<meta name="claude:viewport-fit-sides" content="cover">\n' + page('host-artifact.js'))
 S = os.environ.get('TW_TEST_COPY', '')
 if S: open(S + '/test.html', 'w', encoding='utf-8').write(rd('dist/turing-world.html'))

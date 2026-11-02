@@ -1767,6 +1767,13 @@ function setAnimate(on) {
 }
 setAnimate(animate);
 setDevLook(devLook);
+// phones: hide or show the timeline and zoom (remembered in this browser)
+function setFloats(on) {
+  document.body.classList.toggle('nofloats', !on); $('#bFloats').setAttribute('aria-pressed', String(on));
+  try { localStorage.setItem('tw-floats', on ? 'on' : 'off'); } catch (e) { }
+}
+try { setFloats(localStorage.getItem('tw-floats') !== 'off'); } catch (e) { setFloats(true); }
+$('#bFloats').addEventListener('click', () => setFloats(document.body.classList.contains('nofloats')));
 $('#bAnim').addEventListener('click', () => { setAnimate(!animate); renderLive(); });
 function frame(now) {
   if (playing && !finished() && !animate) {

@@ -77,6 +77,7 @@ ${MAN_TABLE(['Key', 'Action'], [
 <h2>Running and time travel</h2>
 <p class="lead">One machine is the <b>run target</b>, marked RUN on its card. Run starts it; it calls the others.</p>
 ${FIG('timeline', 'The timeline: drag it, or use the arrows, to rewind and replay the run.', 'The timeline slider with step buttons')}
+<p>On a phone, the clock button at the top left of the grid hides or shows the timeline and the zoom controls, to leave more room for the world.</p>
 <h3>Controls</h3>
 ${MAN_TABLE(['Control', 'Does'], [
   ['<b>Step</b>', 'One step of whichever machine is on top of the call stack. A circuit evaluates one layer per step.'],
