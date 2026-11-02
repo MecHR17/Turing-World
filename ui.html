@@ -282,10 +282,10 @@ code { font-family: var(--f-mono); font-size: .92em; background: var(--line-soft
 /* ---- floating panels ---- */
 .floatsbtn { display: none; }
 .float { position: absolute; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 16px 38px -18px var(--shadow); }
-.guide { left: max(14px, env(safe-area-inset-left, 0px)); bottom: 14px; width: min(400px, calc(100% - 28px)); padding: 11px 36px 12px 14px; }
+.guide { left: max(14px, env(safe-area-inset-left, 0px)); bottom: 14px; width: min(400px, calc(100% - 28px)); padding: 11px 36px 12px 14px; max-height: calc(100% - 28px); overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; }
 .guide h3 { margin: 0 0 4px; font-family: var(--f-display); font-size: 15px; display: flex; gap: 8px; align-items: center; }
 .guide p { margin: 0; font-size: 13px; }
-.guide .x { position: absolute; top: 8px; right: 8px; }
+.guide .x { position: sticky; top: 0; float: right; margin: -3px -28px 0 6px; z-index: 1; }   /* stays in view while a long guide scrolls */
 .console { right: max(14px, env(safe-area-inset-right, 0px)); bottom: 14px; width: min(360px, calc(100% - 28px)); }
 .console .ch { display: flex; align-items: center; gap: 8px; padding: 7px 10px 7px 12px; cursor: pointer; }
 .console .ch .ib { margin-left: auto; }
@@ -451,6 +451,7 @@ textarea.gen { min-height: 190px; font-size: 12px; }
   .floatsbtn svg { width: 18px; height: 18px; }
   .floatsbtn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
   body.nofloats .timeline, body.nofloats .zoom { display: none; }
+  .guide { max-height: 42%; bottom: calc(66px + env(safe-area-inset-bottom, 0px)); }   /* a long guide scrolls inside its box */
   .timeline { left: calc(max(14px, env(safe-area-inset-left, 0px)) + 46px); }
 }
 .chips { display: flex; flex-wrap: wrap; gap: 4px; } .chips code { font-family: var(--f-mono); font-size: 12px; background: var(--surface); border: 1px solid var(--line-soft); border-radius: 4px; padding: 1px 5px; }

@@ -1079,11 +1079,13 @@ document.addEventListener('click', e => {
   if (suppressClick) return;
   const menuBtn = e.target.closest('#bWorlds, #bAdd, #bLook');
   if (menuBtn) {
-    const menu = menuBtn.nextElementSibling; const was = !menu.hidden; closeMenus(); menu.hidden = was;
+    const menu = menuBtn.nextElementSibling; const was = !menu.hidden; closeMenus();
+    // measure the screen before the menu opens: an open menu that sticks out widens a phone's layout
+    const vw = document.documentElement.clientWidth; menu.hidden = was;
     if (!menu.hidden) { // keep the whole menu on screen: shift it left if needed, scroll it if tall
-      menu.style.left = ''; menu.style.maxHeight = '';
+      menu.style.left = ''; menu.style.maxHeight = ''; menu.style.maxWidth = (vw - 16) + 'px';
       const r = menu.getBoundingClientRect();
-      if (r.right > innerWidth - 8) menu.style.left = Math.round(innerWidth - 8 - r.right) + 'px';
+      if (r.right > vw - 8) menu.style.left = Math.round(Math.max(8 - (r.left - (parseFloat(getComputedStyle(menu).left) || 0)), vw - 8 - r.right)) + 'px';
       menu.style.maxHeight = Math.max(160, Math.floor(innerHeight - r.top - 10)) + 'px';
     }
     return;
